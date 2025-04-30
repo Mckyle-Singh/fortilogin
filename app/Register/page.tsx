@@ -7,7 +7,8 @@ import {
    CardHeader,
    CardTitle
 } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -30,8 +31,7 @@ export default function Register() {
    });
 
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-   }
+   const handleSubmit = async (data: z.infer<typeof formSchema>) => {};
 
    return <main className="flex justify-center items-center min-h-screen">
       <Card className="w-[350px]">
@@ -46,7 +46,17 @@ export default function Register() {
          <CardContent>
             <Form {...form}>
                <form onSubmit={form.handleSubmit(handleSubmit)}>
-
+                  <FormField control={form.control} name="email" render={(field) => (
+                     <FormItem>
+                        <FormLabel>
+                           Email
+                        </FormLabel>
+                        <FormControl>
+                           <Input {...field} type="email" />
+                        </FormControl>
+                        <FormMessage />
+                     </FormItem>
+                  )} />
                </form>
             </Form>
          </CardContent>
