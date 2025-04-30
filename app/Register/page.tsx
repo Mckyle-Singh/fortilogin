@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from "@/components/ui/button";
 import {
    Card,
    CardContent,
@@ -46,7 +47,10 @@ export default function Register() {
          <CardContent>
             <Form {...form}>
                <form onSubmit={form.handleSubmit(handleSubmit)}>
-                  <FormField control={form.control} name="email" render={(field) => (
+                  <FormField
+                     control={form.control}
+                     name="email"
+                     render={({ field }) => (
                      <FormItem>
                         <FormLabel>
                            Email
@@ -56,7 +60,38 @@ export default function Register() {
                         </FormControl>
                         <FormMessage />
                      </FormItem>
-                  )} />
+                     )} />
+                  <FormField
+                     control={form.control}
+                     name="password"
+                     render={({ field }) => (
+                     <FormItem>
+                        <FormLabel>
+                           Password
+                        </FormLabel>
+                        <FormControl>
+                           <Input {...field} type="password" />
+                        </FormControl>
+                        <FormMessage />
+                     </FormItem>
+                     )} />
+                  <FormField
+                     control={form.control}
+                     name="passwordConfirm"
+                     render={({ field }) => (
+                     <FormItem>
+                        <FormLabel>
+                           Confirm password
+                        </FormLabel>
+                        <FormControl>
+                           <Input {...field} type="email" />
+                        </FormControl>
+                        <FormMessage />
+                     </FormItem>
+                     )} />
+                  <Button type="submit">
+                     Register
+                  </Button>
                </form>
             </Form>
          </CardContent>
