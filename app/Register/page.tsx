@@ -29,7 +29,7 @@ export default function Register() {
       }
    });
 
-
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
    }
 
