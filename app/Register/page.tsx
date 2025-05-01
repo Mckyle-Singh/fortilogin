@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { passwordSchema } from "@/validation/passwordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -17,7 +18,7 @@ import {z} from 'zod';
 
 const formSchema = z.object({
    email: z.string().email(),
-   password: z.string().min(5),
+   password: passwordSchema,
    passwordConfirm: z.string()
 });
 
