@@ -2,7 +2,6 @@
 
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordMatchSchema } from "@/validation/paswordMatchSchema";
-import { error } from "console";
 import { z } from "zod";
 
 export const registerUser = async ({
