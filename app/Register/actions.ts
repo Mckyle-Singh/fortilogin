@@ -3,7 +3,7 @@
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordMatchSchema } from "@/validation/paswordMatchSchema";
 import { z } from "zod";
-import {hash} from "bcryptjs"
+import  {hash} from "bcryptjs"
 import db from "@/db/drizzle";
 import { users } from "@/db/usersSchema";
 
@@ -33,7 +33,7 @@ export const registerUser = async ({
       };
    }
 
-   const hashedPassword = await hash(password, 10);
+   const hashedPassword = await hash(password,10);
    
    await db.insert(users).values({
       email,
