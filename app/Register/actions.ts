@@ -6,7 +6,7 @@ import { z } from "zod";
 import  {hash} from "bcryptjs"
 import db from "@/db/drizzle";
 import { users } from "@/db/usersSchema";
-import { error } from "console";
+
 
 export const registerUser = async ({
    email,

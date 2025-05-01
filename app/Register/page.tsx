@@ -50,7 +50,7 @@ export default function Register() {
 
    return <main className="flex justify-center items-center min-h-screen">
      {form.formState.isSubmitSuccessful ? ( 
-         <div>Your account has been created successfully!</div>  // ✅ Completed message
+         <div>Your account has been created successfully!</div>
       ) : ( 
          <Card className="w-[350px]">
             <CardHeader>
