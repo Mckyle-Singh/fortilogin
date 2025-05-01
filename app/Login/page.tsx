@@ -25,7 +25,7 @@ export default function Login() {
    });
 
    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-      
+      console.log(data)
    }
 
    return (
