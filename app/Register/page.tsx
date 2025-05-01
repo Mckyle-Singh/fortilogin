@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {z} from 'zod';
+import { registerUser } from "./actions";
 
 const formSchema = z.object({
    email: emailSchema
@@ -31,8 +32,15 @@ export default function Register() {
       }
    });
 
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-   const handleSubmit = async (data: z.infer<typeof formSchema>) => {};
+   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+      const response = await registerUser({
+         email: data.email,
+         password: data.password,
+         passwordConfirm: data.passwordConfirm
+      })
+
+      console.log(response);
+   };
 
    return <main className="flex justify-center items-center min-h-screen">
       <Card className="w-[350px]">
