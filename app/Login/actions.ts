@@ -2,7 +2,6 @@
 
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
-import { error } from "console";
 import { z } from "zod";
 
 export const loginWithCredentials = async ({
@@ -29,5 +28,5 @@ export const loginWithCredentials = async ({
       };
    }
 
-   
+
 };

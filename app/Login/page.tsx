@@ -9,6 +9,7 @@ import { passwordSchema } from "@/validation/passwordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { loginWithCredentials } from "./actions";
 
 const formSchema = z.object({
    email: emailSchema,
@@ -25,8 +26,11 @@ export default function Login() {
    });
 
    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-      console.log(data)
-   }
+      await loginWithCredentials({
+         email: data.email,
+         password: data.password,
+      });
+   };
 
    return (
       <main className="flex justify-center items-center min-h-screen">
