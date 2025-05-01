@@ -9,18 +9,16 @@ import {
    CardTitle
 } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { passwordSchema } from "@/validation/passwordSchema";
+import { Input } from "@/components/ui/input"; 
+import { passwordMatchSchema } from "@/validation/paswordMatchSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {z} from 'zod';
 
 const formSchema = z.object({
-   email: z.string().email(),
-   password: passwordSchema,
-   passwordConfirm: z.string()
-});
+   email: z.string().email(), 
+}).and(passwordMatchSchema)
 
 export default function Register() {
    const form = useForm<z.infer<typeof formSchema>>({
@@ -85,7 +83,7 @@ export default function Register() {
                            Confirm password
                         </FormLabel>
                         <FormControl>
-                           <Input {...field} type="email" />
+                           <Input {...field} type="password" />
                         </FormControl>
                         <FormMessage />
                      </FormItem>
