@@ -3,6 +3,9 @@
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordMatchSchema } from "@/validation/paswordMatchSchema";
 import { z } from "zod";
+import {hash} from "bcryptjs"
+import db from "@/db/drizzle";
+import { users } from "@/db/usersSchema";
 
 export const registerUser = async ({
    email,
@@ -29,4 +32,12 @@ export const registerUser = async ({
          message: newUserValidation.error.issues[0]?.message ?? "An error occured"
       };
    }
+
+   const hashedPassword = await hash(password, 10);
+   
+   await db.insert(users).values({
+      email,
+      password: hashedPassword
+   })
+
 };
