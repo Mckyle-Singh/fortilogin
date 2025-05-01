@@ -41,13 +41,14 @@ export const registerUser = async ({
          email,
          password: hashedPassword
       });
-   } catch (e: any) {
-      if (e.code === "23505") {
+   } catch (e: unknown) {
+      if (e instanceof Error && "code" in e && e.code === "23505") { // ✅ Type-safe check
          return {
             error: true,
             message: "An account is already registered with that email address"
          };
       }
+   
       return {
          error: true,
          message: "An error occurred"
