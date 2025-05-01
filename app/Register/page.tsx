@@ -37,7 +37,13 @@ export default function Register() {
          email: data.email,
          password: data.password,
          passwordConfirm: data.passwordConfirm
-      })
+      });
+
+      if (response?.error) {
+         form.setError("email", {
+            message: response?.message
+         });
+      }
 
       console.log(response);
    };
