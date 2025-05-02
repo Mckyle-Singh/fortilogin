@@ -14,14 +14,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Debug environment variables  # ✅ Add this step before the build
-        run: |
-          echo "Database URL: $NEON_DATABASE_URL"
-          echo "Auth Secret: $AUTH_SECRET"
-
       - name: Run lint checks
         run: npm run lint
-
 
       - name: Run tests
         run: npm test
