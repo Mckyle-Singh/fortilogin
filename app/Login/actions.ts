@@ -35,5 +35,5 @@ export const loginWithCredentials = async ({
          password,
          redirect: false
       });
-   } catch(e){}
+   } catch(e){console.error("An error occurred:", e);}
 };
