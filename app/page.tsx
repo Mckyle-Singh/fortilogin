@@ -1,103 +1,61 @@
-import Image from "next/image";
+
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gray-100 text-gray-900 flex flex-col">
+      
+      {/* ✅ Navbar */}
+      <nav className="w-full bg-white shadow-lg px-6 py-4 flex justify-between items-center">
+        {/* Left-side navigation links */}
+        <div className="flex space-x-6">
+          <Link href="/" className="text-xl font-bold text-gray-900">FortiLogin</Link>
+          <Link href="/features" className="hover:text-gray-600 transition">Features</Link>
+          <Link href="/pricing" className="hover:text-gray-600 transition">Pricing</Link>
+          <Link href="/security" className="hover:text-gray-600 transition">Security</Link>
+        </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* ✅ Right-side authentication links - Light theme */}
+        <div className="flex space-x-4">
+          <Link href="/Login" className="text-blue-600 bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+            Login
+          </Link>
+          <Link href="/Register" className="text-blue-600 bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+            Register
+          </Link>
+        </div>
+      </nav>
+
+      {/* ✅ Hero Section - Light Styling */}
+      <main className="flex flex-col items-center justify-center flex-grow text-center px-6 py-20 bg-white shadow-lg rounded-lg">
+        <h1 className="text-5xl font-bold text-gray-900 mb-4">Secure Your Digital Identity</h1>
+        <p className="text-lg text-gray-600 mb-6">End-to-end encryption and seamless authentication with FortiLogin.</p>
+        <div className="flex space-x-4">
+          <Link href="/signup" className="bg-blue-500 px-6 py-3 rounded-lg text-white hover:bg-blue-600 transition">Get Started</Link>
+          <Link href="/learn" className="border border-gray-400 px-6 py-3 rounded-lg text-gray-600 hover:bg-gray-200 transition">Learn More</Link>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* ✅ Feature Cards - Light UI */}
+      <section className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-6 text-center">
+        <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+          <h3 className="text-xl font-bold text-gray-900 mt-4">🔐 End-to-End Encryption</h3>
+          <p className="text-gray-600 mt-2">Your data stays encrypted at all times, ensuring total privacy and security.</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+          <h3 className="text-xl font-bold text-gray-900 mt-4">🛡 Multi-Factor Authentication</h3>
+          <p className="text-gray-600 mt-2">Secure logins with biometric authentication or one-time passcodes.</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+          <h3 className="text-xl font-bold text-gray-900 mt-4">✅ OAuth & JWT Security</h3>
+          <p className="text-gray-600 mt-2">Industry-standard authentication protocols ensuring safe logins.</p>
+        </div>
+      </section>
+
+      {/* ✅ Footer */}
+      <footer className="py-6 text-center text-gray-600">
+        <p>🔒 Fortified with AES-256 encryption, GDPR compliance, and secure authentication.</p>
+      </footer>   
     </div>
   );
 }
