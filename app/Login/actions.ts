@@ -1,5 +1,6 @@
 'use server'
 
+import { signIn } from "@/auth";
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
 import { z } from "zod";
@@ -28,5 +29,11 @@ export const loginWithCredentials = async ({
       };
    }
 
-
+   try {
+      await signIn("credentials", {
+         email,
+         password,
+         redirect: false
+      });
+   } catch(e){}
 };
