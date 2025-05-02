@@ -39,7 +39,7 @@ export default function Login() {
             message: response.message,
          });
       } else {
-         router.push("/myaccount")
+         router.push("/my-account")
       }
    };
 
