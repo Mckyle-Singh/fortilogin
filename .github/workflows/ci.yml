@@ -4,6 +4,9 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }} # ✅ Add Database URL
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }} # ✅ Add NextAuth Secret
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

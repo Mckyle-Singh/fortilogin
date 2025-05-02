@@ -1,75 +1,54 @@
-'use client';
+"use client"
 
 import { Button } from "@/components/ui/button";
-import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardFooter,
-   CardHeader,
-   CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input"; 
+import { Input } from "@/components/ui/input";
 import { emailSchema } from "@/validation/emailSchema";
-import { passwordMatchSchema } from "@/validation/paswordMatchSchema";
+import { passwordSchema } from "@/validation/passwordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-import {z} from 'zod';
-import { registerUser } from "./actions";
+import { z } from "zod";
+import { loginWithCredentials } from "./actions";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const formSchema = z.object({
-   email: emailSchema
-}).and(passwordMatchSchema)
+   email: emailSchema,
+   password: passwordSchema
+})
 
-export default function Register() {
+export default function Login() {
+   const router = useRouter()
    const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
          email: "",
          password: "",
-         passwordConfirm: ""
       }
    });
 
    const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-      const response = await registerUser({
+      const response = await loginWithCredentials({
          email: data.email,
          password: data.password,
-         passwordConfirm: data.passwordConfirm
       });
 
       if (response?.error) {
-         form.setError("email", {
-            message: response?.message
+         form.setError("root", {
+            message: response.message,
          });
+      } else {
+         router.push("/myaccount")
       }
-
-      console.log(response);
    };
 
    return (
       <main className="flex justify-center items-center min-h-screen">
-         {form.formState.isSubmitSuccessful ? ( 
-            <Card className="w-[350px]">
-               <CardHeader>
-                  <CardTitle>Your account has been created</CardTitle>
-               </CardHeader>
-               <CardContent>
-                  <Button asChild className="w-full">
-                     <Link href="/login">
-                        Login to your account
-                     </Link>
-                  </Button>
-               </CardContent>
-            </Card>
-         ) : ( 
-         <Card className="w-[350px]">
+          <Card className="w-[350px]">
             <CardHeader>
-               <CardTitle className="text-2xl font-bold">Register</CardTitle>
-               <CardDescription>Register for a new account</CardDescription>
+               <CardTitle className="text-2xl font-bold" >Login</CardTitle>
+               <CardDescription>Login to your account</CardDescription>
             </CardHeader>
             <CardContent>
                <Form {...form}>
@@ -105,35 +84,31 @@ export default function Register() {
                                  <FormMessage />
                               </FormItem>
                            )} />
-                        <FormField
-                           control={form.control}
-                           name="passwordConfirm"
-                           render={({ field }) => (
-                              <FormItem>
-                                 <FormLabel>
-                                    Confirm password
-                                 </FormLabel>
-                                 <FormControl>
-                                    <Input {...field} type="password" />
-                                 </FormControl>
-                                 <FormMessage />
-                              </FormItem>
-                           )} />
-                        <Button type="submit">Register</Button>
+                              {!!form.formState.errors.root?.message &&
+                                 <FormMessage>
+                                    {form.formState.errors.root.message}
+                                 </FormMessage>
+                              }
+                        <Button type="submit">Login</Button>
                      </fieldset>
                   </form>
                </Form>
-                  </CardContent>
-                  <CardFooter className="flex-col gap-2">
+            </CardContent>
+            <CardFooter className="flex-col gap-2">
                <div className="text-muted-foreground text-sm">
-                  Alreeady have an account?{" "}
-                  <Link href="/Login" className="underline">
-                     Login
+                  Dont have an account?{" "}
+                  <Link href="/Register" className="underline">
+                     Register
+                  </Link>
+               </div>
+               <div className="text-muted-foreground text-sm">
+                  Forgot Password?{" "}
+                  <Link href="/password-reset" className="underline">
+                     Reset Password
                   </Link>
                </div>
             </CardFooter>
          </Card>
-      )}
-   </main>
-   )
-};
+      </main>
+   );
+}
