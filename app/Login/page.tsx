@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { emailSchema } from "@/validation/emailSchema";
@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginWithCredentials } from "./actions";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
    email: emailSchema,
@@ -46,7 +47,7 @@ export default function Login() {
       <main className="flex justify-center items-center min-h-screen">
           <Card className="w-[350px]">
             <CardHeader>
-               <CardTitle>Login</CardTitle>
+               <CardTitle className="text-2xl font-bold" >Login</CardTitle>
                <CardDescription>Login to your account</CardDescription>
             </CardHeader>
             <CardContent>
@@ -93,6 +94,20 @@ export default function Login() {
                   </form>
                </Form>
             </CardContent>
+            <CardFooter className="flex-col gap-2">
+               <div className="text-muted-foreground text-sm">
+                  Dont have an account?{" "}
+                  <Link href="/Register" className="underline">
+                     Register
+                  </Link>
+               </div>
+               <div className="text-muted-foreground text-sm">
+                  Forgot Password?{" "}
+                  <Link href="/password-reset" className="underline">
+                     Reset Password
+                  </Link>
+               </div>
+            </CardFooter>
          </Card>
       </main>
    );

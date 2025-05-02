@@ -5,6 +5,7 @@ import {
    Card,
    CardContent,
    CardDescription,
+   CardFooter,
    CardHeader,
    CardTitle
 } from "@/components/ui/card";
@@ -67,7 +68,7 @@ export default function Register() {
          ) : ( 
          <Card className="w-[350px]">
             <CardHeader>
-               <CardTitle>Register</CardTitle>
+               <CardTitle className="text-2xl font-bold">Register</CardTitle>
                <CardDescription>Register for a new account</CardDescription>
             </CardHeader>
             <CardContent>
@@ -122,7 +123,15 @@ export default function Register() {
                      </fieldset>
                   </form>
                </Form>
-            </CardContent>
+                  </CardContent>
+                  <CardFooter className="flex-col gap-2">
+               <div className="text-muted-foreground text-sm">
+                  Alreeady have an account?{" "}
+                  <Link href="/Login" className="underline">
+                     Login
+                  </Link>
+               </div>
+            </CardFooter>
          </Card>
       )}
    </main>
