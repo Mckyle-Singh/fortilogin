@@ -4,6 +4,7 @@ import db from "./db/drizzle";
 import { users } from "./db/usersSchema";
 import { eq } from "drizzle-orm";
 import { compare } from "bcryptjs";
+import { loginLimiter } from "./lib/security/rateLimiter";
 
  
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -25,6 +26,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       password: {},
     },
     async authorize(credentials) {
+      const key = `login_attempt:${credentials.email}`;
+      const { success } = await loginLimiter.limit(key);
+      if (!success) {
+        throw new Error("Too many login attempts. Please try again later.");
+      }
       const [user] = await db.select().from(users).where(eq(users.email, credentials.email as string))
       
       if (!user) {

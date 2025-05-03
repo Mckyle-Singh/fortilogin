@@ -59,7 +59,7 @@ export default function Register() {
                </CardHeader>
                <CardContent>
                   <Button asChild className="w-full">
-                     <Link href="/login">
+                     <Link href="/Login">
                         Login to your account
                      </Link>
                   </Button>
