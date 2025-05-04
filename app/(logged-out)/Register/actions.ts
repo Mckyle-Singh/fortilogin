@@ -6,6 +6,7 @@ import { z } from "zod";
 import  {hash} from "bcryptjs"
 import db from "@/db/drizzle";
 import { users } from "@/db/usersSchema";
+import { registerLimiter } from "@/lib/security/rateLimiter";
 
 
 export const registerUser = async ({
@@ -18,6 +19,19 @@ export const registerUser = async ({
    passwordConfirm: string;
    }) => { 
    try {
+
+      const rateLimit = await registerLimiter.limit(email);
+
+      if (!rateLimit.success) {
+         return {
+            error: true,
+            message: "Too many registration attempts. Try again later.",
+            rateLimited: true,
+            remaining: rateLimit.remaining,
+            reset: rateLimit.reset,
+         };
+      }
+      
       const newUserSchema = z.object({
          email: emailSchema
       }).and(passwordMatchSchema)

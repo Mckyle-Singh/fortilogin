@@ -11,4 +11,9 @@ const redis = new Redis({
 export const loginLimiter = new Ratelimit({
    redis: redis,
    limiter: Ratelimit.fixedWindow(5, "15 m"),
- });
+});
+ 
+export const registerLimiter = new Ratelimit({
+  redis: redis,
+  limiter: Ratelimit.fixedWindow(5, "30 m"), // Adjusted to 5 registrations per 30 minutes
+});
