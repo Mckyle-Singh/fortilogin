@@ -48,4 +48,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   }),
   ],
+  // 🔐 Secure cookies config
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true, // make sure this is true when running on HTTPS
+      },
+    },
+  },
 });

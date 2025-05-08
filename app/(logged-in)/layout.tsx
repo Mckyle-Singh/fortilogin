@@ -23,6 +23,9 @@ export default async function LoggedInLayout({
                <li>
                   <Link href="/change-password">Change Password</Link>
                </li>
+               <li>
+                  <Link href="/change-password">Make Payment</Link>
+               </li>
             </ul>
             <div>
                <Logoutbutton></Logoutbutton>
