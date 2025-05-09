@@ -21,10 +21,10 @@ export default async function LoggedInLayout({
                   <Link href="/my-account">My account</Link>
                </li>
                <li>
-                  <Link href="/change-password">Change Password</Link>
+                  <Link href="/account-password">Change Password</Link>
                </li>
                <li>
-                  <Link href="/change-password">Make Payment</Link>
+                  <Link href="/account-password">Make Payment</Link>
                </li>
             </ul>
             <div>
