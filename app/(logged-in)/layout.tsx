@@ -12,7 +12,7 @@ export default async function LoggedInLayout({
    
       if (!session?.user?.id) {
          redirect("/Login")
-      }
+   }
    return (
       <div className="min-h-screen flex flex-col">
          <nav className="bg-gray-200 flex justify-between p-4 items-center" >
