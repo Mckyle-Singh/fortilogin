@@ -13,6 +13,7 @@ export default async function LoggedInLayout({
       if (!session?.user?.id) {
          redirect("/Login")
    }
+   const isAdmin = session.user.isAdmin;
    return (
       <div className="min-h-screen flex flex-col">
          <nav className="bg-gray-200 flex justify-between p-4 items-center" >
@@ -20,12 +21,26 @@ export default async function LoggedInLayout({
                <li>
                   <Link href="/my-account">My account</Link>
                </li>
-               <li>
-                  <Link href="/account-password">Change Password</Link>
-               </li>
-               <li>
-                  <Link href="/account-password">Make Payment</Link>
-               </li>
+               {!isAdmin && (
+            <>
+              <li>
+                <Link href="/account-password">Change Password</Link>
+              </li>
+              <li>
+                <Link href="/make-payment">Make Payment</Link>
+              </li>
+            </>
+          )}
+               {isAdmin && (
+            <>
+              <li>
+                <Link href="/admin/dashboard">Admin Dashboard</Link>
+              </li>
+              <li>
+                <Link href="/admin/users">User Management</Link>
+              </li>
+            </>
+          )}
             </ul>
             <div>
                <Logoutbutton></Logoutbutton>
