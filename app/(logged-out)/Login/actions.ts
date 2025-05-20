@@ -43,7 +43,7 @@ export const loginWithCredentials = async ({
       };
     }
 
-   try {
+   try {  
       
       await signIn("credentials", {
          email,
