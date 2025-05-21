@@ -5,6 +5,9 @@ import { loginLimiter } from "@/lib/security/rateLimiter";
 import { emailSchema } from "@/validation/emailSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
 import { z } from "zod";
+import { users } from "@/db/usersSchema";
+import db from "@/db/drizzle";
+import { eq } from "drizzle-orm";
 
 export const loginWithCredentials = async ({
    email,
@@ -44,14 +47,30 @@ export const loginWithCredentials = async ({
     }
 
    try {
-      
-      await signIn("credentials", {
+      const result = await signIn("credentials", {
          email,
          password,
          redirect: false
       });
+
+      if (result?.error) {
+         return {
+            error: true,
+            message: result.error
+         };
+      }
+
+      // ✅ Fetch user and log isAdmin
+      const [user] = await db.select().from(users).where(eq(users.email, email));
+      console.log("✅ Logged-in user:", user?.email);
+      console.log("🛡️ isAdmin:", user?.isAdmin);
+
+      return {
+         error: false,
+         isAdmin: user?.isAdmin ?? false,
+      };
    } catch (e) {
-      console.error("Auth error:", e); 
+      console.error("Auth error:", e);
       return {
          error: true,
          message: "Incorrect email or password"

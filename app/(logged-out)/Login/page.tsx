@@ -34,13 +34,13 @@ export default function Login() {
          password: data.password,
       });
 
-      if (response?.error) {
-         form.setError("root", {
-            message: response.message,
-         });
-      } else {
-         router.push("/my-account")
-      }
+     if (response?.error) {
+   form.setError("root", {
+      message: response.message,
+   });
+} else {
+   router.push(response.isAdmin ? "/Admin-account" : "/my-account");
+}
    };
 
    return (
