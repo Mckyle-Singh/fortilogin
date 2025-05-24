@@ -34,7 +34,7 @@ export default async function LoggedInLayout({
                {isAdmin && (
             <>
               <li>
-                <Link href="/admin/dashboard">Admin Dashboard</Link>
+                <Link href="/Admin-account">Admin Dashboard</Link>
               </li>
               <li>
                 <Link href="/admin/users">User Management</Link>
