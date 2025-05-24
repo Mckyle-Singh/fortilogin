@@ -11,8 +11,13 @@ export default async function LoggedOutLayout({
 
    console.log({session})
 
-   if (!!session?.user?.id) {
-      redirect("/my-account")
+   if (session?.user?.id) {
+      // 🔄 Redirect based on isAdmin
+      if (session.user.isAdmin) {
+         redirect("/Admin-account");
+      } else {
+         redirect("/my-account");
+      }
    }
 
    return children;

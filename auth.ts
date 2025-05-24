@@ -65,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: true, // make sure this is true when running on HTTPS
+        secure: true,
       },
     },
   },
