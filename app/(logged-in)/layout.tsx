@@ -24,10 +24,10 @@ export default async function LoggedInLayout({
                {!isAdmin && (
             <>
               <li>
-                <Link href="/account-password">Change Password</Link>
+                <Link href="/my-account">Change Password</Link>
               </li>
               <li>
-                <Link href="/make-payment">Make Payment</Link>
+                <Link href="/my-account">Make Payment</Link>
               </li>
             </>
           )}
