@@ -35,12 +35,15 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
+  const memoizedValue = React.useMemo(() => ({ name: props.name }), [props.name]);
+
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext.Provider value={memoizedValue}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  )
-}
+  );
+};
+
 
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
