@@ -60,7 +60,7 @@ export default async function AdminDashboard() {
 }
 
 // Dashboard Card Component
-function DashboardCard({ title, value, bgColor, textColor }: { title: string; value: string; bgColor: string; textColor: string }) {
+function DashboardCard({ title, value, bgColor, textColor }: Readonly<{ title: string; value: string; bgColor: string; textColor: string }>) {
   return (
     <div className={`p-6 rounded-lg shadow-md flex items-center justify-center ${bgColor} ${textColor}`}>
       <div className="text-center">
