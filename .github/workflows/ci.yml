@@ -37,7 +37,7 @@ jobs:
           sonar-scanner
           -Dsonar.projectKey=Mckyle-Singh_fortilogin
           -Dsonar.organization=mckyle-singh
-          -Dsonar.sources=src
+          -Dsonar.sources=.
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
