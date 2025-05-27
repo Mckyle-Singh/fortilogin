@@ -16,14 +16,14 @@ jobs:
       - checkout
       - run: mkdir -p odc-data odc-report
       - run:
-          name: Show current directory and check for app/package.json
+          name: Show current directory and check for app/page.tsx
           command: |
             echo "Current directory: $(pwd)"
-            ls -lah
-            if [ -f app/package.json ]; then
-              echo "app/package.json found!"
+            ls -lah app
+            if [ -f app/page.tsx ]; then
+              echo "app/page.tsx found!"
             else
-              echo "app/package.json NOT found!"
+              echo "app/page.tsx NOT found!"
               exit 1
             fi
       - setup_remote_docker
@@ -31,14 +31,14 @@ jobs:
           name: Pull OWASP Dependency-Check image
           command: docker pull owasp/dependency-check:latest
       - run:
-          name: Run OWASP Dependency-Check on app/package.json
+          name: Run OWASP Dependency-Check on app directory
           command: |
             docker run --rm \
               -v "$(pwd):/project" \
               -v "$(pwd)/odc-data:/usr/share/dependency-check/data" \
               -v "$(pwd)/odc-report:/report" \
               owasp/dependency-check:latest \
-              --scan /project/app/package.json \
+              --scan /project/app \
               --format "HTML" \
               --out /report
       - store_artifacts:
