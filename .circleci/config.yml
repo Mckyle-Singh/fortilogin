@@ -17,13 +17,16 @@ jobs:
       - run: mkdir -p odc-data odc-report
       - setup_remote_docker
       - run:
+          name: Pull OWASP Dependency-Check image
+          command: docker pull owasp/dependency-check:latest
+      - run:
           name: Run OWASP Dependency-Check
           command: |
             docker run --rm \
               -v "$(pwd):/project" \
               -v "$(pwd)/odc-data:/usr/share/dependency-check/data" \
               -v "$(pwd)/odc-report:/report" \
-              owasp/dependency-check \
+              owasp/dependency-check:latest \
               --scan /project \
               --format "HTML" \
               --out /report
