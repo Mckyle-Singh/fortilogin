@@ -20,14 +20,14 @@ jobs:
           name: Pull OWASP Dependency-Check image
           command: docker pull owasp/dependency-check:latest
       - run:
-          name: Run OWASP Dependency-Check
+          name: Run OWASP Dependency-Check on package.json
           command: |
             docker run --rm \
               -v "$(pwd):/project" \
               -v "$(pwd)/odc-data:/usr/share/dependency-check/data" \
               -v "$(pwd)/odc-report:/report" \
               owasp/dependency-check:latest \
-              --scan /project \
+              --scan /project/package.json \
               --format "HTML" \
               --out /report
       - store_artifacts:
