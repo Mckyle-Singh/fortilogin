@@ -10,15 +10,15 @@ jobs:
       - run: npm run build
 
   snyk-test:
-  docker:
-    - image: cimg/node:20.11.1
-  steps:
-    - checkout
-    - run: npm install snyk
-    - run: npx snyk auth $SNYK_TOKEN
-    - run:
-        name: Run Snyk Test
-        command: npx snyk test
+    docker:
+      - image: cimg/node:20.11.1
+    steps:
+      - checkout
+      - run: npm install snyk
+      - run: npx snyk auth $SNYK_TOKEN
+      - run:
+          name: Run Snyk Test
+          command: npx snyk test
 
 workflows:
   version: 2
