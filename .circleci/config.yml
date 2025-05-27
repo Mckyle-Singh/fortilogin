@@ -15,17 +15,6 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p odc-data odc-report
-      - run:
-          name: Show current directory and check for app/page.tsx
-          command: |
-            echo "Current directory: $(pwd)"
-            ls -lah app
-            if [ -f app/page.tsx ]; then
-              echo "app/page.tsx found!"
-            else
-              echo "app/page.tsx NOT found!"
-              exit 1
-            fi
       - run: docker pull owasp/dependency-check:latest
       - run: |
           docker run --rm \
