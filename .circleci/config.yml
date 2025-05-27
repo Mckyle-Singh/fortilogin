@@ -9,30 +9,22 @@ jobs:
       - run: npm install
       - run: npm run build
 
-  dependency-check:
-    machine: true
-    working_directory: ~/project
+  snyk-test:
+    docker:
+      - image: cimg/node:20.11.1
     steps:
       - checkout
-      - run: mkdir -p odc-data odc-report
-      - run: docker pull owasp/dependency-check:latest
-      - run: |
-          docker run --rm \
-            -v $(pwd):/project \
-            -v $(pwd)/odc-data:/usr/share/dependency-check/data \
-            -v $(pwd)/odc-report:/report \
-            owasp/dependency-check:latest \
-            --project "nextjs-owasp" \
-            --scan /project/package.json \
-            --format "HTML" \
-            --out /report
-      - store_artifacts:
-          path: odc-report
-          destination: dependency-check-report
+      - run: sudo npm install -g snyk
+      - run: snyk auth $SNYK_TOKEN
+      - run:
+          name: Run Snyk Test
+          command: snyk test
 
 workflows:
   version: 2
   build-workflow:
     jobs:
       - build
-      - dependency-check
+      - snyk-test:
+          requires:
+            - build
