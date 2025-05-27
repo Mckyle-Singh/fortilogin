@@ -15,6 +15,17 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p odc-data odc-report
+      - run:
+          name: Show current directory and check for package.json
+          command: |
+            echo "Current directory: $(pwd)"
+            ls -lah
+            if [ -f package.json ]; then
+              echo "package.json found!"
+            else
+              echo "package.json NOT found!"
+              exit 1
+            fi
       - setup_remote_docker
       - run:
           name: Pull OWASP Dependency-Check image
