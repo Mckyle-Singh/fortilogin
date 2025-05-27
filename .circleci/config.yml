@@ -2,18 +2,19 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-      - image: cimg/node:20.11.1
+    machine:
+      image: ubuntu-2204:current
     steps:
       - checkout
       - run: npm install
       - run: npm run build
 
   dependency-check:
-    docker:
-      - image: cimg/node:20.11.1
+    machine:
+      image: ubuntu-2204:current
     steps:
       - checkout
+      - run: sudo apt-get update && sudo apt-get install -y docker.io
       - run: mkdir -p odc-data odc-report
       - run:
           name: Show current directory and check for app/page.tsx
@@ -26,14 +27,13 @@ jobs:
               echo "app/page.tsx NOT found!"
               exit 1
             fi
-      - setup_remote_docker
       - run:
           name: Pull OWASP Dependency-Check image
-          command: docker pull owasp/dependency-check:latest
+          command: sudo docker pull owasp/dependency-check:latest
       - run:
           name: Run OWASP Dependency-Check on app directory
           command: |
-            docker run --rm \
+            sudo docker run --rm \
               -v "$(pwd):/project" \
               -v "$(pwd)/odc-data:/usr/share/dependency-check/data" \
               -v "$(pwd)/odc-report:/report" \
