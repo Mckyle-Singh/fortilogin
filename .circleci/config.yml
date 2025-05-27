@@ -2,19 +2,18 @@ version: 2.1
 
 jobs:
   build:
-    machine:
-      image: ubuntu-2204:current
+    docker:
+      - image: cimg/node:20.11.1
     steps:
       - checkout
       - run: npm install
       - run: npm run build
 
   dependency-check:
-    machine:
-      image: ubuntu-2204:current
+    machine: true
+    working_directory: ~/project
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt-get install -y docker.io
       - run: mkdir -p odc-data odc-report
       - run:
           name: Show current directory and check for app/page.tsx
@@ -27,20 +26,17 @@ jobs:
               echo "app/page.tsx NOT found!"
               exit 1
             fi
-      - run:
-          name: Pull OWASP Dependency-Check image
-          command: sudo docker pull owasp/dependency-check:latest
-      - run:
-          name: Run OWASP Dependency-Check on app directory
-          command: |
-            sudo docker run --rm \
-              -v "$(pwd):/project" \
-              -v "$(pwd)/odc-data:/usr/share/dependency-check/data" \
-              -v "$(pwd)/odc-report:/report" \
-              owasp/dependency-check:latest \
-              --scan /project/app \
-              --format "HTML" \
-              --out /report
+      - run: docker pull owasp/dependency-check:latest
+      - run: |
+          docker run --rm \
+            -v $(pwd):/project \
+            -v $(pwd)/odc-data:/usr/share/dependency-check/data \
+            -v $(pwd)/odc-report:/report \
+            owasp/dependency-check:latest \
+            --project "nextjs-owasp" \
+            --scan /project/package.json \
+            --format "HTML" \
+            --out /report
       - store_artifacts:
           path: odc-report
           destination: dependency-check-report
