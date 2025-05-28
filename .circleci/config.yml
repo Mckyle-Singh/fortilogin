@@ -28,9 +28,9 @@ jobs:
       - run:
           name: Start OWASP ZAP API Security Scan
           command: |
-            zap-cli quick-scan http://localhost:3000/api/auth/signin
-            zap-cli quick-scan http://localhost:3000/api/auth/session
-            zap-cli quick-scan http://localhost:3000/api/auth/signout
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signin
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/session
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signout
 
 workflows:
   version: 2
