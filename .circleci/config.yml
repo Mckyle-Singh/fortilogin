@@ -20,11 +20,27 @@ jobs:
           name: Run Snyk Test
           command: npx snyk test
 
+  zap-test:
+    docker:
+      - image: owasp/zap2docker-weekly
+    steps:
+      - checkout
+      - run:
+          name: Start OWASP ZAP API Security Scan
+          command: |
+            zap-cli quick-scan http://localhost:3000/api/auth/signin
+            zap-cli quick-scan http://localhost:3000/api/auth/session
+            zap-cli quick-scan http://localhost:3000/api/auth/signout
+
 workflows:
   version: 2
-  build-workflow:
+  security-workflow:
     jobs:
       - build
       - snyk-test:
           requires:
             - build
+      - zap-test:
+          requires:
+            - build
+
