@@ -14,17 +14,32 @@ jobs:
       - image: cimg/node:20.11.1
     steps:
       - checkout
-      - run: sudo npm install -g snyk
-      - run: snyk auth $SNYK_TOKEN
+      - run: npm install snyk
+      - run: npx snyk auth $SNYK_TOKEN
       - run:
           name: Run Snyk Test
-          command: snyk test
+          command: npx snyk test
+
+  zap-test:
+    docker:
+      - image: ghcr.io/zaproxy/zaproxy:stable
+    steps:
+      - checkout
+      - run:
+          name: Start OWASP ZAP API Security Scan
+          command: |
+            zap-cli quick-scan http://localhost:3000/api/auth/signin
+            zap-cli quick-scan http://localhost:3000/api/auth/session
+            zap-cli quick-scan http://localhost:3000/api/auth/signout
 
 workflows:
   version: 2
-  build-workflow:
+  security-workflow:
     jobs:
       - build
       - snyk-test:
+          requires:
+            - build
+      - zap-test:
           requires:
             - build
