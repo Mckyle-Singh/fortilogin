@@ -22,15 +22,24 @@ jobs:
 
   zap-test:
     docker:
-      - image: owasp/zap2docker-weekly
+      - image: ghcr.io/zaproxy/zaproxy:stable
     steps:
       - checkout
       - run:
           name: Start OWASP ZAP API Security Scan
           command: |
-            zap-cli quick-scan http://localhost:3000/api/auth/signin
-            zap-cli quick-scan http://localhost:3000/api/auth/session
-            zap-cli quick-scan http://localhost:3000/api/auth/signout
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signin -quickprogress -quickout /tmp/zap_signin_report.html
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/session -quickprogress -quickout /tmp/zap_session_report.html
+            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signout -quickprogress -quickout /tmp/zap_signout_report.html
+      - store_artifacts:
+          path: /tmp/zap_signin_report.html
+          destination: zap_signin_report.html
+      - store_artifacts:
+          path: /tmp/zap_session_report.html
+          destination: zap_session_report.html
+      - store_artifacts:
+          path: /tmp/zap_signout_report.html
+          destination: zap_signout_report.html
 
 workflows:
   version: 2
@@ -43,4 +52,3 @@ workflows:
       - zap-test:
           requires:
             - build
-
