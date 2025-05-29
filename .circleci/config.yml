@@ -34,8 +34,8 @@ jobs:
           name: Wait for app to start
           command: sleep 30
       - run:
-          name: Verbose curl to check app
-          command: curl -v https://localhost:3000/
+          name: Verbose curl to check app (ignore cert)
+          command: curl -vk https://localhost:3000/
   snyk-test:
     executor: node-executor
     steps:
