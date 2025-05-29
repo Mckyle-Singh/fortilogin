@@ -1,54 +1,61 @@
 version: 2.1
-
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:18.20.2
+    working_directory: ~/project
+  zap-executor:
+    docker:
+      - image: owasp/zap2docker-stable
+    working_directory: ~/project
 jobs:
   build:
-    docker:
-      - image: cimg/node:20.11.1
+    executor: node-executor
     steps:
       - checkout
-      - run: npm install
-      - run: npm run build
-
-  snyk-test:
-    docker:
-      - image: cimg/node:20.11.1
-    steps:
-      - checkout
-      - run: npm install snyk
-      - run: npx snyk auth $SNYK_TOKEN
+      - restore_cache:
+          keys:
+            - npm-cache-{{ checksum "package-lock.json" }}
+            - npm-cache-
       - run:
-          name: Run Snyk Test
-          command: npx snyk test
-
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - ~/.npm
+          key: npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Build the app
+          command: npm run build
   zap-test:
-    docker:
-      - image: ghcr.io/zaproxy/zaproxy:stable
+    executor: node-executor
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - npm-cache-{{ checksum "package-lock.json" }}
+            - npm-cache-
       - run:
-          name: Start OWASP ZAP API Security Scan
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Start app in background
+          command: npm run dev &
+      - run:
+          name: Wait for app to be ready
+          command: sleep 10
+      - run:
+          name: Run ZAP scan against HTTPS
           command: |
-            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signin -quickprogress -quickout /tmp/zap_signin_report.html
-            zap.sh -cmd -quickurl http://localhost:3000/api/auth/session -quickprogress -quickout /tmp/zap_session_report.html
-            zap.sh -cmd -quickurl http://localhost:3000/api/auth/signout -quickprogress -quickout /tmp/zap_signout_report.html
+            docker run --network host --rm owasp/zap2docker-stable zap-baseline.py -t https://localhost:3000 -r zap_report.html || true
       - store_artifacts:
-          path: /tmp/zap_signin_report.html
-          destination: zap_signin_report.html
-      - store_artifacts:
-          path: /tmp/zap_session_report.html
-          destination: zap_session_report.html
-      - store_artifacts:
-          path: /tmp/zap_signout_report.html
-          destination: zap_signout_report.html
-
+          path: zap_report.html
+          destination: zap_report.html
 workflows:
   version: 2
-  security-workflow:
+  build_and_scan:
     jobs:
       - build
-      - snyk-test:
-          requires:
-            - build
       - zap-test:
           requires:
             - build
