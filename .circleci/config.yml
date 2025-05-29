@@ -1,41 +1,19 @@
 version: 2.1
-executors:
-  node-executor:
-    docker:
-      - image: cimg/node:20.11.1
-    working_directory: ~/project
-  zap-executor:
-    docker:
-      - image: ghcr.io/zaproxy/zaproxy:stable
-    working_directory: ~/project
+
 jobs:
   build:
-    executor: node-executor
+    docker:
+      - image: cimg/node:20.11.1
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm-cache-{{ checksum "package-lock.json" }}
-            - npm-cache-
+      - run: npm install
+      - run: npm run build
       - run:
-          name: Install dependencies
-          command: npm install
-      - save_cache:
-          paths:
-            - ~/.npm
-          key: npm-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Build the app
-          command: npm run build
-      - run:
-          name: Start the app in background (dev)
+          name: Start app in background
           command: npm run start -- --hostname 0.0.0.0 &
       - run:
           name: Wait for app to start
           command: sleep 30
-      - run:
-          name: Check if Node.js process is running
-          command: ps aux | grep node
       - run:
           name: Verbose curl to check app (ignore cert)
           command: |
@@ -45,25 +23,21 @@ jobs:
               cat ./logs/* || true;
               exit 1;
             }
+
   snyk-test:
-    executor: node-executor
+    docker:
+      - image: cimg/node:20.11.1
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm-cache-{{ checksum "package-lock.json" }}
-            - npm-cache-
-      - run:
-          name: Install Snyk
-          command: npm install snyk
-      - run:
-          name: Authenticate Snyk
-          command: npx snyk auth $SNYK_TOKEN
+      - run: npm install snyk
+      - run: npx snyk auth $SNYK_TOKEN
       - run:
           name: Run Snyk Test
           command: npx snyk test
+
   zap-test:
-    executor: zap-executor
+    docker:
+      - image: ghcr.io/zaproxy/zaproxy:stable
     steps:
       - checkout
       - run:
@@ -81,6 +55,7 @@ jobs:
       - store_artifacts:
           path: /tmp/zap_signout_report.html
           destination: zap_signout_report.html
+
 workflows:
   version: 2
   security-workflow:
