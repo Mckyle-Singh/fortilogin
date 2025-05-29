@@ -32,7 +32,7 @@ jobs:
           command: npm run dev &
       - run:
           name: Wait for app to start
-          command: sleep 10
+          command: sleep 30
       - run:
           name: Verbose curl to check app
           command: curl -v https://localhost:3000/
