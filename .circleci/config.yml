@@ -34,6 +34,9 @@ jobs:
           name: Wait for app to start
           command: sleep 30
       - run:
+          name: Check if Node.js process is running
+          command: ps aux | grep node
+      - run:
           name: Verbose curl to check app (ignore cert)
           command: curl -vk https://localhost:3000/
   snyk-test:
