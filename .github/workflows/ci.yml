@@ -57,7 +57,7 @@ jobs:
       - name: Start application with SSL
         run: |
           npm install
-          npm run dev -- --hostname 0.0.0.0 --port 3000 --ssl-cert ./cert.pem --ssl-key ./key.pem &
+          npx next dev -- --hostname 0.0.0.0 --port 3000 --ssl-cert ./cert.pem --ssl-key ./key.pem &
           sleep 15
 
       - name: Verify the app is running with curl
