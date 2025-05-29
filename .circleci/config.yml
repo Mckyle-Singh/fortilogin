@@ -28,8 +28,11 @@ jobs:
           name: Build the app
           command: npm run build
       - run:
-          name: Start the app in background
-          command: npm start &
+          name: Start the app in background (dev)
+          command: npm run dev &
+      - run:
+          name: Wait for app to start
+          command: sleep 10
   snyk-test:
     executor: node-executor
     steps:
