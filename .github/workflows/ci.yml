@@ -49,13 +49,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Start application
+      - name: Generate SSL Certificates
+        run: |
+          openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes \
+          -subj "/CN=localhost"
+
+      - name: Start application with SSL
         run: |
           npm install
-          npm run dev -- --hostname 0.0.0.0 --port 3000 &
-          sleep 15  # Wait for the app to start
+          npm run dev -- --hostname 0.0.0.0 --port 3000 --ssl-cert ./cert.pem --ssl-key ./key.pem &
+          sleep 15
 
       - name: Run OWASP ZAP API Security Scan
         run: |
-          docker run -v $(pwd):/zap/wrk -t ghcr.io/zaproxy/zaproxy:stable zap.sh \
-          -cmd -quickurl https://localhost:3000/api/auth/signin -quickprogress
+          docker run -t ghcr.io/zaproxy/zaproxy:stable zap.sh \
+          -cmd -quickurl https://localhost:3000/api/auth/signin -quickprogress -ssltrustall
+
