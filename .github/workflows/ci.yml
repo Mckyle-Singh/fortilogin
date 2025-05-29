@@ -63,5 +63,5 @@ jobs:
       - name: Run OWASP ZAP API Security Scan
         run: |
           docker run -t ghcr.io/zaproxy/zaproxy:stable zap.sh \
-          -cmd -quickurl https://localhost:3000/api/auth/signin -quickprogress -ssltrustall
+          -cmd -quickurl https://localhost:3000/api/auth/signin -quickprogress
 
