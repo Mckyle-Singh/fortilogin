@@ -2,11 +2,11 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:18.20.2
+      - image: cimg/node:20.11.1
     working_directory: ~/project
   zap-executor:
     docker:
-      - image: owasp/zap2docker-stable
+      - image: ghcr.io/zaproxy/zaproxy:stable
     working_directory: ~/project
 jobs:
   build:
@@ -27,7 +27,10 @@ jobs:
       - run:
           name: Build the app
           command: npm run build
-  zap-test:
+      - run:
+          name: Start the app in background
+          command: npm start &
+  snyk-test:
     executor: node-executor
     steps:
       - checkout
@@ -36,26 +39,41 @@ jobs:
             - npm-cache-{{ checksum "package-lock.json" }}
             - npm-cache-
       - run:
-          name: Install dependencies
-          command: npm install
+          name: Install Snyk
+          command: npm install snyk
       - run:
-          name: Start app in background
-          command: npm run dev &
+          name: Authenticate Snyk
+          command: npx snyk auth $SNYK_TOKEN
       - run:
-          name: Wait for app to be ready
-          command: sleep 10
+          name: Run Snyk Test
+          command: npx snyk test
+  zap-test:
+    executor: zap-executor
+    steps:
+      - checkout
       - run:
-          name: Run ZAP scan against HTTPS
+          name: Start OWASP ZAP API Security Scan
           command: |
-            docker run --network host --rm owasp/zap2docker-stable zap-baseline.py -t https://localhost:3000 -r zap_report.html || true
+            zap.sh -cmd -quickurl https://localhost:3000/api/auth/signin -quickprogress -quickout /tmp/zap_signin_report.html
+            zap.sh -cmd -quickurl https://localhost:3000/api/auth/session -quickprogress -quickout /tmp/zap_session_report.html
+            zap.sh -cmd -quickurl https://localhost:3000/api/auth/signout -quickprogress -quickout /tmp/zap_signout_report.html
       - store_artifacts:
-          path: zap_report.html
-          destination: zap_report.html
+          path: /tmp/zap_signin_report.html
+          destination: zap_signin_report.html
+      - store_artifacts:
+          path: /tmp/zap_session_report.html
+          destination: zap_session_report.html
+      - store_artifacts:
+          path: /tmp/zap_signout_report.html
+          destination: zap_signout_report.html
 workflows:
   version: 2
-  build_and_scan:
+  security-workflow:
     jobs:
       - build
+      - snyk-test:
+          requires:
+            - build
       - zap-test:
           requires:
             - build
