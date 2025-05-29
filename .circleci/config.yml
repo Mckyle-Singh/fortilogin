@@ -35,7 +35,7 @@ jobs:
           command: sleep 10
       - run:
           name: Verbose curl to check app
-          command: curl -v http://localhost:3000/
+          command: curl -v https://localhost:3000/
   snyk-test:
     executor: node-executor
     steps:
