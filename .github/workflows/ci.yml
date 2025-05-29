@@ -53,16 +53,9 @@ jobs:
         run: |
           npm install
           npm run dev -- --hostname 0.0.0.0 --port 3000 &
-          sleep 15  # Wait for app to start
+          sleep 15  # Wait for the app to start
 
       - name: Run OWASP ZAP API Security Scan
         run: |
           docker run -v $(pwd):/zap/wrk -t ghcr.io/zaproxy/zaproxy:stable zap.sh \
-          -cmd -quickurl http://localhost:3000/api/auth/signin -quickprogress \
-          -quickout /zap/wrk/zap_signin_report.html
-
-      - name: Upload ZAP Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: ZAP Security Report
-          path: zap_signin_report.html
+          -cmd -quickurl http://localhost:3000/api/auth/signin -quickprogress
