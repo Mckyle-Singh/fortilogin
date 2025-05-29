@@ -60,6 +60,9 @@ jobs:
           npm run dev -- --hostname 0.0.0.0 --port 3000 --ssl-cert ./cert.pem --ssl-key ./key.pem &
           sleep 15
 
+      - name: Verify the app is running with curl
+        run: curl -vk https://localhost:3000 || echo "App failed to start"
+
       - name: Run OWASP ZAP API Security Scan
         run: |
           docker run -t ghcr.io/zaproxy/zaproxy:stable zap.sh \
