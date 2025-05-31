@@ -17,6 +17,12 @@ jobs:
       - name: Run lint checks
         run: npm run lint
 
+      - name: Run tests with coverage
+        run: npm test -- --passWithNoTests --coverage
+
+      - name: Show coverage folder contents
+        run: ls -R coverage/
+
       - name: Build Next.js project
         run: npm run build
 

@@ -12,6 +12,7 @@ const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
   coverageDirectory: "coverage",
+  coverageReporters: ["lcov", "text"],
 
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
