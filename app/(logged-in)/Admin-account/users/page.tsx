@@ -30,7 +30,7 @@ return (
           <tr className="bg-gray-200 text-gray-700">
             <th className="p-4 text-left">Email</th>
             <th className="p-4 text-left">Registration Date</th>
-            <th className="p-4 text-center">Actions</th> {/* New column for buttons */}
+            <th className="p-4 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
