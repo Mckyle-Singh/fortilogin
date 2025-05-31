@@ -47,6 +47,11 @@ jobs:
         with:
           name: coverage
           path: coverage/
+      
+      - name: Check coverage report content
+        run: |
+          echo "Path: $(pwd)/coverage/lcov.info"
+          head -n 20 coverage/lcov.info
 
       - name: Install SonarQube Scanner
         run: npm install -g sonarqube-scanner
