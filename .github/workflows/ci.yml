@@ -1,5 +1,6 @@
 name: CI Pipeline
-on: push
+on: 
+  pull_request:
 
 jobs:
   build:
@@ -65,6 +66,9 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+          -Dsonar.pullrequest.branch=${{ github.head_ref }}
+          -Dsonar.pullrequest.base=${{ github.base_ref }}
           
 
 
