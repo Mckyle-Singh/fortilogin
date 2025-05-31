@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: coverage/lcov.info
+          path: coverage/
 
   sonar-scan:
     runs-on: ubuntu-latest
