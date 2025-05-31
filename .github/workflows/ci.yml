@@ -42,6 +42,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+
       - name: Install SonarQube Scanner
         run: npm install -g sonarqube-scanner
 
