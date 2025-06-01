@@ -4,9 +4,7 @@ import { render, screen } from '@testing-library/react';
 import AdminUsers from './page';
 
 jest.mock('./../../../../auth', () => ({
-  auth: jest.fn(() => Promise.resolve({
-    user: { id: '1', isAdmin: true }
-  })),
+  auth: jest.fn(),
 }));
 
 jest.mock('./../../../../db/drizzle', () => ({
@@ -24,11 +22,31 @@ jest.mock('../../../../db/usersSchema', () => ({
   users: {},
 }));
 
-test('renders User Management heading for admin', async () => {
-  const Page = await AdminUsers(); // ✅ Call the async server component
-  render(Page); // ✅ Render the result of calling it
+// 👇 Mock `redirect` from next/navigation
+const mockRedirect = jest.fn();
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
+  redirect: (...args: any[]) => mockRedirect(...args),
+}));
 
-  expect(
-    screen.getByRole('heading', { name: /User Management/i })
-  ).toBeInTheDocument();
+const { auth } = require('./../../../../auth');
+
+test('renders User Management heading for admin', async () => {
+  auth.mockResolvedValueOnce({
+    user: { id: '1', isAdmin: true },
+  });
+
+  const Page = await AdminUsers(); // Call server component
+  render(Page); // Render static output
+
+  expect(screen.getByRole('heading', { name: /User Management/i })).toBeInTheDocument();
+});
+
+test('redirects if user is not admin', async () => {
+  auth.mockResolvedValueOnce({
+    user: { id: '2', isAdmin: false }, // Not an admin
+  });
+
+  await AdminUsers(); // Will call redirect
+  expect(mockRedirect).toHaveBeenCalledWith('/');
 });
