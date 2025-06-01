@@ -1,5 +1,6 @@
 name: CI Pipeline
-on: push
+on: 
+  pull_request:
 
 jobs:
   build:
@@ -17,11 +18,23 @@ jobs:
       - name: Run lint checks
         run: npm run lint
 
-      - name: Run tests
-        run: npm test
+      - name: Run tests with coverage
+        run: npm test -- --passWithNoTests --coverage
+
+      - name: Show coverage folder contents
+        run: ls -R coverage/
 
       - name: Build Next.js project
         run: npm run build
+
+      - name: Confirm coverage folder contents before upload
+        run: ls -lR coverage/
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
 
   sonar-scan:
     runs-on: ubuntu-latest
@@ -29,6 +42,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+      
+      - name: Check coverage report content
+        run: |
+          echo "Path: $(pwd)/coverage/lcov.info"
+          head -n 20 coverage/lcov.info
 
       - name: Install SonarQube Scanner
         run: npm install -g sonarqube-scanner
@@ -41,4 +65,11 @@ jobs:
           -Dsonar.sources=.
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+          -Dsonar.pullrequest.branch=${{ github.head_ref }}
+          -Dsonar.pullrequest.base=${{ github.base_ref }}
+          -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
+          
+
 

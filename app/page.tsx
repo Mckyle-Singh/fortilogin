@@ -28,7 +28,7 @@ export default function Home() {
 
       {/* ✅ Hero Section - Light Styling */}
       <main className="flex flex-col items-center justify-center flex-grow text-center px-6 py-20 bg-white shadow-lg rounded-lg">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">Secure Your Digital Identity</h1>
+        <h1 className="text-5xl font-bold text-gray-900 mb-4">Secure Your Digital Identity Now</h1>
         <p className="text-lg text-gray-600 mb-6">End-to-end encryption and seamless authentication with FortiLogin.</p>
         <div className="flex space-x-4">
           <Link href="/signup" className="bg-blue-500 px-6 py-3 rounded-lg text-white hover:bg-blue-600 transition">Get Started</Link>
