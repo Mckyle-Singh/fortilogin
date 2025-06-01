@@ -22,12 +22,14 @@ jest.mock('../../../../db/usersSchema', () => ({
   users: {},
 }));
 
-// 👇 Mock `redirect` from next/navigation
 const mockRedirect = jest.fn();
-jest.mock('next/navigation', () => ({
-  ...jest.requireActual('next/navigation'),
-  redirect: (...args: any[]) => mockRedirect(...args),
-}));
+jest.mock('next/navigation', () => {
+  const actual = jest.requireActual('next/navigation');
+  return {
+    ...actual,
+    redirect: (url: string) => mockRedirect(url),
+  };
+});
 
 const { auth } = require('./../../../../auth');
 
