@@ -80,3 +80,7 @@ jobs:
               -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
               -Dsonar.branch.name=development \
               -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
+              
+          fi
+
+          
