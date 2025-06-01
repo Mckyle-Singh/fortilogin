@@ -13,6 +13,12 @@ const config: Config = {
   testEnvironment: 'jsdom',
   coverageDirectory: "coverage",
   coverageReporters: ["lcov", "text"],
+  collectCoverageFrom: [
+  "app/**/*.{js,ts,jsx,tsx}",
+  "components/**/*.{js,ts,jsx,tsx}",
+  "!**/node_modules/**",
+  "!**/.next/**",
+],
 
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
