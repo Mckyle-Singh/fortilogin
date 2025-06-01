@@ -1,13 +1,17 @@
 name: CI Pipeline
-on: 
+
+on:
   pull_request:
+  push:
+    branches:
+      - development  # 🔁 This makes sure Sonar runs when code is merged to development
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }} # ✅ Add Database URL
-      AUTH_SECRET: ${{ secrets.AUTH_SECRET }} # ✅ Add NextAuth Secret
+      NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -48,28 +52,31 @@ jobs:
         with:
           name: coverage
           path: coverage/
-      
-      - name: Check coverage report content
-        run: |
-          echo "Path: $(pwd)/coverage/lcov.info"
-          head -n 20 coverage/lcov.info
 
       - name: Install SonarQube Scanner
         run: npm install -g sonarqube-scanner
 
       - name: Run SonarQube Analysis
-        run: >
-          sonar-scanner
-          -Dsonar.projectKey=Mckyle-Singh_fortilogin
-          -Dsonar.organization=mckyle-singh
-          -Dsonar.sources=.
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-          -Dsonar.pullrequest.branch=${{ github.head_ref }}
-          -Dsonar.pullrequest.base=${{ github.base_ref }}
-          -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
-          
-
-
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            sonar-scanner \
+              -Dsonar.projectKey=Mckyle-Singh_fortilogin \
+              -Dsonar.organization=mckyle-singh \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+              -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} \
+              -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+              -Dsonar.pullrequest.base=${{ github.base_ref }} \
+              -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
+          else
+            sonar-scanner \
+              -Dsonar.projectKey=Mckyle-Singh_fortilogin \
+              -Dsonar.organization=mckyle-singh \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+              -Dsonar.branch.name=development \
+              -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
