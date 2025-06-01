@@ -14,10 +14,12 @@ const config: Config = {
   coverageDirectory: "coverage",
   coverageReporters: ["lcov", "text"],
   collectCoverageFrom: [
-  "app/**/*.{js,ts,jsx,tsx}",
-  "components/**/*.{js,ts,jsx,tsx}",
-  "!**/node_modules/**",
-  "!**/.next/**",
+    "app/**/*.{js,ts,jsx,tsx}",
+    "components/**/*.{js,ts,jsx,tsx}",
+    "!**/node_modules/**",
+    "!**/.next/**",
+    "!jest.config.{js,ts}",        // 👈 exclude Jest config file
+    "!next.config.{js,ts}",        // 👈 exclude Next.js config too (if needed)
 ],
 
   // Add more setup options before each test is run
