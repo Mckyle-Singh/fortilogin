@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import LoggedInLayout from './layout';
