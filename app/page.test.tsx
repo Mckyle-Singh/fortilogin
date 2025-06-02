@@ -1,41 +1,45 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import Page from '../app/page'
- 
+
 describe('Page', () => {
   beforeEach(() => {
     render(<Page />)
   })
 
-  it('renders main heading', () => {
-    const heading = screen.getByRole('heading', { level: 1 })
-    expect(heading).toBeInTheDocument()
-  })
+  it('renders main sections and content', () => {
+    // Heading
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
 
-  it('renders navigation links', () => {
-    expect(screen.getByText('FortiLogin')).toBeInTheDocument()
-    expect(screen.getByText('Features')).toBeInTheDocument()
-    expect(screen.getByText('Pricing')).toBeInTheDocument()
-    expect(screen.getByText('Security')).toBeInTheDocument()
-  })
+    // Navigation Links
+    const navLinks = ['FortiLogin', 'Features', 'Pricing', 'Security']
+    navLinks.forEach(text => {
+      expect(screen.getByText(text)).toBeInTheDocument()
+    })
 
-  it('renders authentication links', () => {
-    expect(screen.getByText('Login')).toBeInTheDocument()
-    expect(screen.getByText('Register')).toBeInTheDocument()
-  })
+    // Authentication Links
+    const authLinks = ['Login', 'Register']
+    authLinks.forEach(text => {
+      expect(screen.getByText(text)).toBeInTheDocument()
+    })
 
-  it('renders hero section buttons', () => {
-    expect(screen.getByText('Get Started')).toBeInTheDocument()
-    expect(screen.getByText('Learn More')).toBeInTheDocument()
-  })
+    // Hero Section Buttons
+    const heroButtons = ['Get Started', 'Learn More']
+    heroButtons.forEach(text => {
+      expect(screen.getByText(text)).toBeInTheDocument()
+    })
 
-  it('renders feature cards', () => {
-    expect(screen.getByText('🔐 End-to-End Encryption')).toBeInTheDocument()
-    expect(screen.getByText('🛡 Multi-Factor Authentication')).toBeInTheDocument()
-    expect(screen.getByText('✅ OAuth & JWT Security')).toBeInTheDocument()
-  })
+    // Feature Cards
+    const featureCards = [
+      '🔐 End-to-End Encryption',
+      '🛡 Multi-Factor Authentication',
+      '✅ OAuth & JWT Security'
+    ]
+    featureCards.forEach(text => {
+      expect(screen.getByText(text)).toBeInTheDocument()
+    })
 
-  it('renders footer text', () => {
+    // Footer
     expect(screen.getByText(/Fortified with AES-256 encryption/i)).toBeInTheDocument()
   })
 })
