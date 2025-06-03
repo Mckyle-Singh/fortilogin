@@ -1,11 +1,25 @@
-// app/payments/page.tsx
-'use client';
-
+import { auth } from "@/auth"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-export default function PaymentsPage() {
+import { redirect } from "next/navigation";
+
+
+export default async function PaymentsPage() {
+   const session = await auth();
+    // Redirect if not logged in
+  if (!session?.user) {
+    redirect("/");
+    return;  
+  }
+
+  // ✅ Redirect if the user is an admin
+  if (session.user.isAdmin === true) {
+    redirect("/unauthorised"); // Or "/admin-dashboard"
+    return;  
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen p-4">
       <Card className="w-full max-w-md shadow-lg">

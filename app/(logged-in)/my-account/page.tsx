@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function MyAccount() {
    const session = await auth();
-    if (!session?.user || session.user.isAdmin) {
+    if (!session?.user) {
     redirect("/"); // or "/admin-dashboard" or "/not-authorized"
   }
    return (
