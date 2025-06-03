@@ -47,15 +47,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run SonarCloud Scan
-          command: |
+           name: Run SonarCloud Scan
+           command: |
             sonar-scanner \
-              -Dsonar.projectKey=Mckyle-Singh_fortilogin\
-              -Dsonar.organization=mckyle-singh\
+              -Dsonar.projectKey=Mckyle-Singh_fortilogin \
+              -Dsonar.organization=mckyle-singh \
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN2 \
+              -Dsonar.token=$SONAR_TOKEN2 \
               -Dsonar.sources=. \
-              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
               -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
 
 workflows:
