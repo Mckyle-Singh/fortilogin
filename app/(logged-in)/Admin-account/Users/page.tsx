@@ -7,7 +7,7 @@ export default async function AdminUsers() {
   const session = await auth();
 
   if (!session?.user?.isAdmin) {
-    redirect("/");
+    redirect("/unauthorised");
   }
 
   // Fetch all non-admin users

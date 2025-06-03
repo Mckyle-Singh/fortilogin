@@ -16,7 +16,7 @@ export default async function PaymentsPage() {
 
   // ✅ Redirect if the user is an admin
   if (session.user.isAdmin === true) {
-    redirect("/"); // Or "/admin-dashboard"
+    redirect("/unauthorised"); // Or "/admin-dashboard"
     return;  
   }
 

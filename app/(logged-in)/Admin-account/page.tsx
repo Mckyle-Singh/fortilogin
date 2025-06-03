@@ -6,7 +6,7 @@ export default async function AdminDashboard() {
 
   // If not admin, redirect to a "not authorized" page or home
   if (!session?.user?.isAdmin) {
-    redirect("/");
+    redirect("/unauthorised");
   }
 
   // Hardcoded data

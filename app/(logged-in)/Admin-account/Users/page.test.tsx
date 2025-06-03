@@ -50,5 +50,5 @@ test('redirects if user is not admin', async () => {
   });
 
   await AdminUsers(); // Will call redirect
-  expect(mockRedirect).toHaveBeenCalledWith('/');
+  expect(mockRedirect).toHaveBeenCalledWith('/unauthorised');
 });

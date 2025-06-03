@@ -10,9 +10,9 @@ export default function Home() {
         {/* Left-side navigation links */}
         <div className="flex space-x-6">
           <Link href="/" className="text-xl font-bold text-gray-900">FortiLogin</Link>
-          <Link href="/features" className="hover:text-gray-600 transition">Features</Link>
-          <Link href="/pricing" className="hover:text-gray-600 transition">Pricing</Link>
-          <Link href="/security" className="hover:text-gray-600 transition">Security</Link>
+          <Link href="/" className="hover:text-gray-600 transition">Features</Link>
+          <Link href="/" className="hover:text-gray-600 transition">Pricing</Link>
+          <Link href="/" className="hover:text-gray-600 transition">Security</Link>
         </div>
 
         {/* ✅ Right-side authentication links - Light theme */}

@@ -58,6 +58,6 @@ describe('PaymentsPage', () => {
     });
 
     await PaymentsPage();
-    expect(mockRedirect).toHaveBeenCalledWith('/');
+    expect(mockRedirect).toHaveBeenCalledWith('/unauthorised');
   });
 });
