@@ -41,6 +41,23 @@ jobs:
           path: /tmp/zap_signout_report.html
           destination: zap_signout_report.html
 
+  sonar-scan:
+    docker:
+      - image: sonarsource/sonar-scanner-cli:latest
+    steps:
+      - checkout
+      - run:
+           name: Run SonarCloud Scan
+           command: |
+            sonar-scanner \
+              -Dsonar.projectKey=Mckyle-Singh_fortilogin \
+              -Dsonar.organization=mckyle-singh \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.token=$SONAR_TOKEN2 \
+              -Dsonar.sources=. \
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+              -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
+
 workflows:
   version: 2
   security-workflow:
@@ -50,5 +67,8 @@ workflows:
           requires:
             - build
       - zap-test:
+          requires:
+            - build
+      - sonar-scan:
           requires:
             - build
