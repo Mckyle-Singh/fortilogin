@@ -53,7 +53,7 @@ jobs:
               -Dsonar.projectKey=Mckyle-Singh_fortilogin\
               -Dsonar.organization=mckyle-singh\
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.login=$SONAR_TOKEN2 \
               -Dsonar.sources=. \
               -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
               -Dsonar.coverage.exclusions=**/*.test.tsx,**/*.spec.tsx,**/mocks/**,dist/**,build/**,**/node_modules/**,**/jest.config.{js,ts}
