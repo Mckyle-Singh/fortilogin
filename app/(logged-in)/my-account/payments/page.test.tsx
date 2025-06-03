@@ -1,5 +1,4 @@
-// __tests__/PaymentsPage.test.tsx
-
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
